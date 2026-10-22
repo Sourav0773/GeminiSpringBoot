@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/transcriptions")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class TranscriptionController {
 
