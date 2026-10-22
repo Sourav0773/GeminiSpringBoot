@@ -27,11 +27,13 @@ public class TranscriptionController {
     @GetMapping("/get-all-transcriptions")
     public ResponseEntity<Page<TranscriptionEntity>> getAllTranscriptions(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy) {
+            @RequestParam(defaultValue = "10") int size) {
 
         log.info("API called: GET /api/transcriptions | page={} | size={}", page, size);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+
+        // Create basic pageable; the service will enforce the createdAt descending sort
+        Pageable pageable = PageRequest.of(page, size);
+
         return ResponseEntity.ok(transcriptionService.getAllTranscriptions(pageable));
     }
 
@@ -49,7 +51,7 @@ public class TranscriptionController {
         return ResponseEntity.ok(transcriptionService.updateTranscription(uuid, request));
     }
 
-    @DeleteMapping("delete/{uuid}")
+    @DeleteMapping("/delete/{uuid}")
     public ResponseEntity<String> deleteTranscription(@PathVariable UUID uuid) {
         log.info("API called: DELETE /api/transcriptions/{}", uuid);
         transcriptionService.deleteTranscription(uuid);

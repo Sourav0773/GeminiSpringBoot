@@ -6,7 +6,9 @@ import com.procucev.speech_transcription.repository.TranscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,16 @@ public class TranscriptionService {
     private final GeminiService geminiService;
 
     public Page<TranscriptionEntity> getAllTranscriptions(Pageable pageable) {
-        log.info("Fetching transcriptions with pagination");
-        return repository.findAll(pageable);
+        log.info("Fetching transcriptions with pagination sorted by ID descending");
+
+        // Sort strictly by ID descending
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by("id").descending()
+        );
+
+        return repository.findAll(sortedPageable);
     }
 
     public TranscriptionEntity saveTranscription(TranscriptionRequest request) {
