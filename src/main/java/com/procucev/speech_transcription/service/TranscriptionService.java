@@ -24,14 +24,11 @@ public class TranscriptionService {
 
     public Page<TranscriptionEntity> getAllTranscriptions(Pageable pageable) {
         log.info("Fetching transcriptions with pagination sorted by ID descending");
-
-        // Sort strictly by ID descending
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 Sort.by("id").descending()
         );
-
         return repository.findAll(sortedPageable);
     }
 

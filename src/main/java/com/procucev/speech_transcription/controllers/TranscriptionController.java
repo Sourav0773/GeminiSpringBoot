@@ -30,10 +30,7 @@ public class TranscriptionController {
             @RequestParam(defaultValue = "10") int size) {
 
         log.info("API called: GET /api/transcriptions | page={} | size={}", page, size);
-
-        // Create basic pageable; the service will enforce the createdAt descending sort
         Pageable pageable = PageRequest.of(page, size);
-
         return ResponseEntity.ok(transcriptionService.getAllTranscriptions(pageable));
     }
 
